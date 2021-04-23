@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour del Caballero</title>
+</head>
+<body>
+  <script>
+    function getBoard(N) {
+      let board = [];
+      for (let i=0; i<N; i++) {
+        let row = [];
+        for (let j=0; j<N; j++) {
+          row.push(0)
+        }
+        board.push(row);
+      }
+      return board;
+    }
+
+
+    function getNextMoves(board, i, j) {
+      const N = board.length;
+
+      const moves = [];
+      // Possible moves
+      // i+2  j-1; i+2  j+1; i+1  j-2; i+1  j+2
+      // i-2  j-1; i-2  j+1; i-1  j-2; i-1  j+2  
+      if (i<N-2) {
+        if (j>0 && board[i+2][j-1] == 0) {
+          moves.push([i+2, j-1]);
+        }
+        if (j<N-1 && board[i+2][j+1] == 0) {
+          moves.push([i+2, j+1]);
+        }
+      }
+
+      if (i<N-1) {
+        if (j>1 && board[i+1][j-2] == 0) {
+          moves.push([i+1, j-2]);
+        }
+        if(j<N-2 && board[i+1][j+2] == 0) {
+          moves.push([i+1, j+2])
+        }
+      }
+      
+      if (i>1) {
+        if(j>0 && board[i-2][j-1] == 0) {
+          moves.push([i-2, j-1]);
+        }
+        if (j<N-1 && board[i-2][j+1] == 0) {
+          moves.push([i-2, j+1]);
+        }
+      }
+
+      if (i>0) {
+        if (j>1 && board[i-1][j-2] == 0) {
+          moves.push([i-1, j-2]);
+        }
+        if (j<N-2 && board[i-1][j+2] == 0) {
+          moves.push([i-1, j+2]);
+        }
+      }
+
+      return moves;
+    }
+
+    function getTour(N) {
+      //let board = Array(N).fill(Array(N).fill(0));
+      let board = getBoard(N);
+
+      function knightRec(board, path, i, j) {
+        board[i][j] = 1;
+        path.push([i,j]);
+        
+        if (path.length == N*N) {
+          return path;
+        }
+        
+        const moves = getNextMoves(board, i, j);
+        if (moves.length == 0) {
+          return false;  // no more possible moves
+        }
+        
+        for (move of moves) {
+          const new_path = knightRec(board, path, move[0], move[1]);
+          if (new_path) {
+            return new_path;
+          }
+        }
+        return false;
+      }
+
+      return knightRec(board, [], 0, 0);
+    }
+
+
+    function Fib(n) {
+      if (n==0 || n==1) {
+        return n;
+      }
+      return Fib(n-1) + Fib(n-2);
+    }
+
+    var glazedDonuts = [
+      {
+        frosting: 'Pastelera',
+        style: 'Cucurucho',
+        type: 'Berlin',
+        age: 50,
+        time: 'seconds'
+      },
+      {
+        frosting: 'glazed',
+        style: 'cake',
+        type: 'old fashioned',
+        age: 45,
+        time: 'minutes'
+      },
+      {
+        frosting: 'glazed',
+        style: 'yeast raised',
+        type: 'regular',
+        age: 5,
+        time: 'minutes'
+      },
+      {
+        frosting: 'glazed',
+        style: 'yeast raised',
+        type: 'jelly filled',
+        age: 1,
+        time: 'seconds'
+      }
+    ];
+
+    let donuts = 0;
+    for (let i=0; i<glazedDonuts.length; i++) {
+      const dona_i = glazedDonuts[i];
+
+      if ((dona_i.age < 25 && dona_i.time == 'minutes') ||
+          dona_i.time == 'seconds')   {
+        donuts++;
+        console.log('Comiendo la Donut ' + dona_i.style);
+      }
+    }
+    // Interpolación de Strings
+    console.log(`Me comí ${donuts} donuts`);
+  </script>
+</body>
+</html>
