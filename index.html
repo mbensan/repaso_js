@@ -7,6 +7,7 @@
   <title>Tour del Caballero</title>
 </head>
 <body>
+  <div id="main"></div>
   <script>
     function getBoard(N) {
       let board = [];
@@ -104,49 +105,78 @@
       return Fib(n-1) + Fib(n-2);
     }
 
-    var glazedDonuts = [
-      {
-        frosting: 'Pastelera',
-        style: 'Cucurucho',
-        type: 'Berlin',
-        age: 50,
-        time: 'seconds'
-      },
-      {
-        frosting: 'glazed',
-        style: 'cake',
-        type: 'old fashioned',
-        age: 45,
-        time: 'minutes'
-      },
-      {
-        frosting: 'glazed',
-        style: 'yeast raised',
-        type: 'regular',
-        age: 5,
-        time: 'minutes'
-      },
-      {
-        frosting: 'glazed',
-        style: 'yeast raised',
-        type: 'jelly filled',
-        age: 1,
-        time: 'seconds'
-      }
-    ];
+    function numPalabra(num) {
+      const primeros15 = ['cero', 'uno', 'dos', 'tres', 'cuatro', 'cinco',
+        'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece',
+        'catorce', 'quince'];
 
-    let donuts = 0;
-    for (let i=0; i<glazedDonuts.length; i++) {
-      const dona_i = glazedDonuts[i];
-
-      if ((dona_i.age < 25 && dona_i.time == 'minutes') ||
-          dona_i.time == 'seconds')   {
-        donuts++;
-        console.log('Comiendo la Donut ' + dona_i.style);
+      if (num <= 15) { // del 0 al 15
+        return primeros15[num];
       }
+      else if (num <= 19) { // del 16 al 19
+        return 'dieci' + numPalabra(num - 10)
+      }
+      else if (num == 20) {
+        return 'veinte';
+      }
+      else if (num <= 29) { // del 21 al 29
+        return 'veinti' + numPalabra(num - 20);
+      }
+      else if (num <= 99) { // el 30 al 99
+        const decimal = Math.floor(num/10);
+        const unidades = num - decimal*10;
+
+        const palabrasDecimales = ['treinta', 'cuarenta', 'cincuenta', 'sesenta',
+          'setenta', 'ochenta', 'noventa'];
+
+        if (unidades == 0) {
+          return palabrasDecimales[decimal - 3];
+        } else {
+          return palabrasDecimales[decimal - 3] + ' y ' + numPalabra(unidades);
+        }
+      }
+      if (num == 100) {
+        return 'cien'
+      }
+      else if (num <= 199) { // del 101 al 199
+        const resto = num - 100;
+        return 'ciento ' + numPalabra(resto);
+      }
+
+      if (num <= 999) { // del 200 al 999
+        const centenas = Math.floor(num/100);
+        const resto = num - (centenas * 100);
+
+        const palabrasCent = ['doscientos', 'trescientos', 'cuatrocientos',
+          'quinientos', 'seiscientos', 'setecientos', 'ochocientos',
+          'novecientos'];
+
+        if (resto == 0) {
+          return palabrasCent[centenas - 2];
+        } else {
+          return palabrasCent[centenas - 2] + ' ' + numPalabra(resto);
+        }
+      }
+      else if (num == 1000) {
+        return 'mil';
+      }
+      else if (num <= 1999) { // del 1001 al 1999
+        const resto = num - 1000;
+        return 'mil ' + numPalabra(resto);
+      }
+      else if (num <= 999999) { // 
+        const miles = Math.floor(num/1000);
+        const resto = num - (miles * 1000);
+        
+        if (resto == 0) {
+          return numPalabra(miles) + ' mil';
+        } else {
+          return numPalabra(miles) + ' mil ' + numPalabra(resto);
+        }
+      }
+      // hasta acá llegamos
+      return 'NO IMPLEMENTADO';
     }
-    // Interpolación de Strings
-    console.log(`Me comí ${donuts} donuts`);
   </script>
 </body>
 </html>
